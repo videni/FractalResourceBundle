@@ -1,0 +1,22 @@
+{
+    "name": "videni/fractal-resource-bundle",
+    "license": "MIT",
+    "type": "bundle",
+    "description": "Integrate league/fractal into SyliusResourceBundle",
+    "autoload": {
+        "psr-4": {
+            "Videni\\FractalResourceBundle\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.0",
+        "league/fractal": "~0.17",
+        "samj/fractal-bundle": "^3.0",
+        "sylius/resource-bundle": "^1.6"
+    }
+}

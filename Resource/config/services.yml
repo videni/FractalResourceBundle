@@ -1,0 +1,22 @@
+services:
+    videni.fractal_resource_bundle.view_handler:
+        class: Videni\Bundle\FractalResourceBundle\View\ViewHandler
+        decorates: 'sylius.resource_controller.view_handler'
+        arguments:
+            - '@videni.fractal_resource_bundle.view_handler.inner'
+            - ‘@router'
+
+    videni.resource_controller.resources_collection_provider:
+        class: Videni\Bundle\FractalBundle\Controller\ResourcesCollectionProvider
+        decorates: 'sylius.resource_controller.resources_collection_provider'
+        arguments:
+            - ‘@sylius.resource_controller.resources_resolver'
+            - ‘@sylius.resource_controller.pagerfanta_representation_factory'
+    
+    videni.serializer:
+        class: Videni\Bundle\FractalBundle\Controller\ResourcesCollectionProvider
+        decorates: 'fos_rest.serializer'
+        arguments:
+            - ‘@videni.serializer.inner'
+    
+    
