@@ -1,4 +1,9 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
     videni.fractal_resource_bundle.view_handler:
         class: Videni\Bundle\FractalResourceBundle\View\ViewHandler
         decorates: 'sylius.resource_controller.view_handler'
@@ -10,7 +15,6 @@ services:
         class: Videni\Bundle\FractalResourceBundle\Controller\ResourcesCollectionProvider
         decorates: 'sylius.resource_controller.resources_collection_provider'
         arguments:
-            
             - ‘@sylius.resource_controller.resources_resolver'
             - ‘@sylius.resource_controller.pagerfanta_representation_factory'
     
@@ -18,6 +22,11 @@ services:
         class: Videni\Bundle\FractalResourceBundle\Controller\ResourcesCollectionProvider
         decorates: 'fos_rest.serializer'
         arguments:
-            - ‘@videni.serializer.inner'
-    
-    
+            - ‘@sylius.resource_controller.resources_resolver'
+            - ‘@sylius.resource_controller.pagerfanta_representation_factory'
+            
+    videni.fractal_transfomer_locator:
+        class: Symfony\Component\DependencyInjection\ServiceLocator
+        arguments:
+            - [] # Injected by RegisterTransfomerPass
+               
