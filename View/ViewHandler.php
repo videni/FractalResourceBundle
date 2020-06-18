@@ -1,5 +1,7 @@
 <?php 
 
+declare(strict_types=1);
+
 namespace Videni\Bundle\FractalResourceBundle\View;
 
 use Sylius\Bundle\ResourceBundle\Controller\ViewHandlerInterface;

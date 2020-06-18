@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FOS\Bundle\FractalResourceBundle\Serializer;
 
 use FOS\RestBundle\Context\Context;

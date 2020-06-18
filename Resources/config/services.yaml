@@ -7,14 +7,15 @@ services:
             - ‘@router'
 
     videni.resource_controller.resources_collection_provider:
-        class: Videni\Bundle\FractalBundle\Controller\ResourcesCollectionProvider
+        class: Videni\Bundle\FractalResourceBundle\Controller\ResourcesCollectionProvider
         decorates: 'sylius.resource_controller.resources_collection_provider'
         arguments:
+            
             - ‘@sylius.resource_controller.resources_resolver'
             - ‘@sylius.resource_controller.pagerfanta_representation_factory'
     
     videni.serializer:
-        class: Videni\Bundle\FractalBundle\Controller\ResourcesCollectionProvider
+        class: Videni\Bundle\FractalResourceBundle\Controller\ResourcesCollectionProvider
         decorates: 'fos_rest.serializer'
         arguments:
             - ‘@videni.serializer.inner'

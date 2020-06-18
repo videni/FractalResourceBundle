@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Videni\Bundle\FractalResourceBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;

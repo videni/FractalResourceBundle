@@ -5,7 +5,7 @@
     "description": "Integrate league/fractal into SyliusResourceBundle",
     "autoload": {
         "psr-4": {
-            "Videni\\FractalResourceBundle\\": ""
+            "Videni\\Bundle\\FractalResourceBundle\\": ""
         }
     },
     "autoload-dev": {
@@ -18,5 +18,10 @@
         "league/fractal": "~0.17",
         "samj/fractal-bundle": "^3.0",
         "sylius/resource-bundle": "^1.6"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
 }
