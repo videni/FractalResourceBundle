@@ -60,7 +60,7 @@ final class ResourcesCollectionProvider implements ResourcesCollectionProviderIn
             if (!$requestConfiguration->isHtmlRequest()) {
                 //Return if fractal transfomer is set.
                 $transformer = $requestConfiguration->getVars()['transformer'] ?? null;
-                if ($transformer) {
+                if (!$transformer) {
                     return $paginator;
                 }
 

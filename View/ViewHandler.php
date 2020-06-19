@@ -13,6 +13,7 @@ use League\Fractal\Pagination\PagerfantaPaginatorAdapter;
 use Symfony\Component\Routing\RouterInterface;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use Sylius\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ViewHandler implements ViewHandlerInterface
@@ -49,10 +50,10 @@ class ViewHandler implements ViewHandlerInterface
             return;
         }
 
-        $data = $view->getData();
         $request = $requestConfiguration->getRequest();
-
         $router = $this->router;
+        
+        $data = $view->getData();
         if ($data instanceof Pagerfanta) {
             $filteredResults = $data->getCurrentPageResults();
 
@@ -69,7 +70,11 @@ class ViewHandler implements ViewHandlerInterface
             $resource->setPaginator($paginatorAdapter);
 
             $view->setData($resource);
-        } else if ($data) {
+
+            return ;
+        } 
+        
+        if ($data instanceof ResourceInterface) {
             $view->setData(new Item($data, $transformer));
         }
     }

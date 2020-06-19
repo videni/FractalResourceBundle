@@ -24,3 +24,7 @@ services:
         arguments:
             - '@videni.serializer.inner'
             - '@SamJ\FractalBundle\ContainerAwareManager'
+    
+    Videni\Bundle\FractalResourceBundle\Serializer\FormErrorHandler:
+        arguments:
+            - '@translator'
