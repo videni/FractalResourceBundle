@@ -9,24 +9,18 @@ services:
         decorates: 'sylius.resource_controller.view_handler'
         arguments:
             - '@videni.fractal_resource_bundle.view_handler.inner'
-            - ‘@router'
+            - '@router'
 
     videni.resource_controller.resources_collection_provider:
         class: Videni\Bundle\FractalResourceBundle\Controller\ResourcesCollectionProvider
         decorates: 'sylius.resource_controller.resources_collection_provider'
         arguments:
-            - ‘@sylius.resource_controller.resources_resolver'
-            - ‘@sylius.resource_controller.pagerfanta_representation_factory'
+            - '@sylius.resource_controller.resources_resolver'
+            - '@sylius.resource_controller.pagerfanta_representation_factory'
     
     videni.serializer:
-        class: Videni\Bundle\FractalResourceBundle\Controller\ResourcesCollectionProvider
+        class: Videni\Bundle\FractalResourceBundle\Serializer\FractalSerializerAdapter
         decorates: 'fos_rest.serializer'
         arguments:
-            - ‘@sylius.resource_controller.resources_resolver'
-            - ‘@sylius.resource_controller.pagerfanta_representation_factory'
-            
-    videni.fractal_transfomer_locator:
-        class: Symfony\Component\DependencyInjection\ServiceLocator
-        arguments:
-            - [] # Injected by RegisterTransfomerPass
-               
+            - '@videni.serializer.inner'
+            - '@SamJ\FractalBundle\ContainerAwareManager'

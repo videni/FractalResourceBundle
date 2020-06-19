@@ -8,6 +8,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use SamJ\FractalBundle\ContainerAwareManager;
+use Symfony\Component\DependencyInjection\Compiler;
+use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 
 final class RegisterTransfomerPass implements CompilerPassInterface
 {
@@ -20,8 +22,6 @@ final class RegisterTransfomerPass implements CompilerPassInterface
             return;
         }
 
-        $locatorDefinition = $container->findDefinition('videni.fractal_transfomer_locator');
-
         $transfomers = [];
         foreach ($container->findTaggedServiceIds('videni.fractal_transfomer') as $id => $attributes) {
             $key = $attributes[0]['key']?? null;
@@ -29,12 +29,15 @@ final class RegisterTransfomerPass implements CompilerPassInterface
                 throw new \InvalidArgumentException('Tagged fractal transfomers needs to have `key` attribute.');
             }
 
-            $transfomers[$key ] = new Reference($id);
+            $transfomers[$key] = new Reference($id);
         }
 
-        $locatorDefinition->addArgument($transfomers);
+        $container
+            ->setAlias('videni.fractal_transfomer_locator', (string) ServiceLocatorTagPass::register($container, $transfomers))
+            ->setPublic(true);
 
-        $def = $container->getDefinition(ContainerAwareManager::class);
-        $def->addMethodCall('setContainer', [$locatorDefinition]);
+        $container
+            ->getDefinition(ContainerAwareManager::class)
+            ->addMethodCall('setContainer', [new Reference('videni.fractal_transfomer_locator')]);
     }
 }

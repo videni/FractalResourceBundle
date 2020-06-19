@@ -2,19 +2,23 @@
 
 declare(strict_types=1);
 
-namespace FOS\Bundle\FractalResourceBundle\Serializer;
+namespace Videni\Bundle\FractalResourceBundle\Serializer;
 
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
 use League\Fractal\Resource\ResourceInterface;
+use League\Fractal\Manager;
 
 class FractalSerializerAdapter implements Serializer
 {
     private $decreated;
 
-    public function __construct(Serializer $decreated)
+    private $manager;
+
+    public function __construct(Serializer $decreated, Manager $manager)
     {
         $this->decreated = $decreated;
+        $this->manager = $manager;
     }
 
     /**
@@ -22,7 +26,9 @@ class FractalSerializerAdapter implements Serializer
      */
     public function serialize($data, $format, Context $context)
     {
-        $data  = $data instanceof ResourceInterface ? $data->toArray(): $data;
+        if ($data instanceof ResourceInterface) {
+            $data = $this->manager->createData($data)->toArray();
+        }
        
         return $this->decreated->serialize($data, $format, $context);
     }

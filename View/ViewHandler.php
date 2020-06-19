@@ -33,23 +33,26 @@ class ViewHandler implements ViewHandlerInterface
      */
     public function handle(RequestConfiguration $requestConfiguration, View $view): Response
     {
-        $transformer = $requestConfiguration->getVars()['transfomer'] ?? null;
-        if ($requestConfiguration->isHtmlRequest() || !$transformer) {
+        if ($requestConfiguration->isHtmlRequest()) {
             return $this->decorated->handle($requestConfiguration, $view);
         }
+        
+        $this->createResource($requestConfiguration, $view);
 
-        $request = $requestConfiguration->getRequest();
-        $data = $view->getData();
-        $resource = $this->createResource($transformer, $data, $request);
-        $view->setData($resource);
-
-        return $this->decorated->handle($view);
+        return $this->decorated->handle($requestConfiguration, $view);
     }
 
-    protected function createResource($transformer, $data,  Request $request)
+    protected function createResource(RequestConfiguration $requestConfiguration, View $view)
     {
-        $router = $this->router;
+        $transformer = $this->getTransformer($requestConfiguration);
+        if (!$transformer) {
+            return;
+        }
 
+        $data = $view->getData();
+        $request = $requestConfiguration->getRequest();
+
+        $router = $this->router;
         if ($data instanceof Pagerfanta) {
             $filteredResults = $data->getCurrentPageResults();
 
@@ -65,9 +68,14 @@ class ViewHandler implements ViewHandlerInterface
             $resource = new Collection($filteredResults, $transformer);
             $resource->setPaginator($paginatorAdapter);
 
-            return $resource;
-        } 
-        
-        return new Item($data, $transformer);
+            $view->setData($resource);
+        } else if ($data) {
+            $view->setData(new Item($data, $transformer));
+        }
+    }
+
+    private function getTransformer(RequestConfiguration $requestConfiguration)
+    {
+        return $requestConfiguration->getVars()['transfomer']?? null;
     }
 }
